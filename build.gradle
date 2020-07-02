@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+',  changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -14,7 +14,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'java'
 
-group = 'com.tesseract.api' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'org.muramasa.gti' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'tesseract'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -126,7 +126,7 @@ static def getVersionAppendage() {
 
     def proc = 'git rev-parse --short HEAD'.execute()
     proc.waitFor()
-    return 'dev-' + proc.exitValue() ? 'unknown' : proc.text.trim()
+    return 'dev-' + (proc.exitValue() ? 'unknown' : proc.text.trim())
 }
 
 version = tesseract_version + '.' + getVersionAppendage()
