@@ -126,7 +126,7 @@ static def getVersionAppendage() {
 
     def proc = 'git rev-parse --short HEAD'.execute()
     proc.waitFor()
-    return 'dev-' + (proc.exitValue() ? 'unknown' : proc.text.trim())
+    return 'dev_' + (proc.exitValue() ? 'unknown' : proc.text.trim())
 }
 
 version = tesseract_version + '.' + getVersionAppendage()
@@ -184,7 +184,5 @@ publishing {
     }
 }
 
-artifacts {
-    deobfJar
-    sourcesJar
-}
+assemble.dependsOn(deobfJar)
+assemble.dependsOn(sourcesJar)
