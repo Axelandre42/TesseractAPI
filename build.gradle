@@ -120,8 +120,8 @@ dependencies {
 }
 
 static def getVersionAppendage() {
-    if (System.env.TRAVIS) {
-        return System.env.TRAVIS_BUILD_NUMBER
+    if (System.env.GITHUB_ACTIONS) {
+        return System.env.GITHUB_RUN_NUMBER
     }
 
     def proc = 'git rev-parse --short HEAD'.execute()
@@ -159,13 +159,27 @@ task sourcesJar(type: Jar) {
 }
 
 // Maven publishing:
-// (includes universal, development, source
+// (includes universal, development, sources)
 publishing {
     publications {
         java(MavenPublication) {
             artifact jar
             artifact deobfJar
             artifact sourcesJar
+        }
+    }
+    repositories {
+        maven {
+            // Publish to GitHub Packages, quick and easy.
+            name 'GitHubPackages'
+
+            // TODO: Testing purposes, will migrate to base repository when approved.
+            url 'https://maven.pkg.github.com/Axelandre42/TesseractAPI'
+
+            credentials {
+                username = System.env.GITHUB_ACTOR
+                password = System.env.GITHUB_TOKEN
+            }
         }
     }
 }
